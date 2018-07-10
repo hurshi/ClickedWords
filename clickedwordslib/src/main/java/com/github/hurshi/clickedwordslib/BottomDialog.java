@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.view.WindowManager;
 public abstract class BottomDialog extends AppCompatDialogFragment {
     private OnBottomDialogDismissListener listener;
     private String words;
+    private FragmentManager manager;
 
     public BottomDialog() {
     }
@@ -49,7 +53,10 @@ public abstract class BottomDialog extends AppCompatDialogFragment {
         getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                dismiss();
+                FragmentTransaction ft = manager.beginTransaction();
+                ft.hide(BottomDialog.this);
+                ft.commit();
+//                dismiss();
                 if (null != listener) {
                     listener.onDismiss();
                 }
@@ -64,10 +71,30 @@ public abstract class BottomDialog extends AppCompatDialogFragment {
 
     public void setWords(String words) {
         this.words = words;
+        if (null != getView()) {
+            setUpView(getView(), words);
+        }
     }
 
-    public void show(FragmentManager fragmentManager) {
-        show(fragmentManager, getFragmentTag());
+    public void show(FragmentManager manager) {
+        this.manager = manager;
+        show(manager, getFragmentTag());
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        if (null == manager) {
+            return;
+        }
+        Fragment fragment = manager.findFragmentByTag(tag);
+        FragmentTransaction ft = manager.beginTransaction();
+        if (null == fragment) {
+            ft.add(this, tag);
+        } else {
+            ft.show(this);
+            getDialog().show();
+        }
+        ft.commit();
     }
 
     public abstract int getLayoutRes();
