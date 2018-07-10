@@ -2,11 +2,8 @@ package com.github.hurshi.clickedwords;
 
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.github.hurshi.clickedwordslib.BottomDialog;
-
-public class WordDetailDialog extends BottomDialog {
+public class WordDetailDialog extends com.github.hurshi.clickedwordslib.WordDetailDialog {
     public WordDetailDialog() {
     }
 

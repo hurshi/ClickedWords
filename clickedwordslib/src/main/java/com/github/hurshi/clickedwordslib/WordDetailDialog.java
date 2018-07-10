@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDialogFragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +16,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-public abstract class BottomDialog extends AppCompatDialogFragment {
+public abstract class WordDetailDialog extends AppCompatDialogFragment {
     private OnBottomDialogDismissListener listener;
     private String words;
     private FragmentManager manager;
 
-    public BottomDialog() {
+    public WordDetailDialog() {
     }
 
     @Override
@@ -54,7 +53,7 @@ public abstract class BottomDialog extends AppCompatDialogFragment {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 FragmentTransaction ft = manager.beginTransaction();
-                ft.hide(BottomDialog.this);
+                ft.hide(WordDetailDialog.this);
                 ft.commit();
 //                dismiss();
                 if (null != listener) {

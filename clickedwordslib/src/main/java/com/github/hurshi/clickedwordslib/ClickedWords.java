@@ -35,7 +35,7 @@ public class ClickedWords {
                     if (null != builder.getListener()) {
                         builder.getListener().wordsClicked(words);
                     }
-                    if (null != builder.getBottomDialog()) {
+                    if (null != builder.getWordDetailDialog()) {
                         showWordDetail(builder, positions, words);
                     }
                 }
@@ -62,14 +62,14 @@ public class ClickedWords {
 
     private void showWordDetail(final Builder builder, Pair<Integer, Integer> positions, String words) {
         setTextViewClicked(builder, positions);
-        builder.getBottomDialog().setWords(words);
-        builder.getBottomDialog().setListener(new BottomDialog.OnBottomDialogDismissListener() {
+        builder.getWordDetailDialog().setWords(words);
+        builder.getWordDetailDialog().setListener(new WordDetailDialog.OnBottomDialogDismissListener() {
             @Override
             public void onDismiss() {
                 setTextViewNormal(builder.getTextView());
             }
         });
-        builder.getBottomDialog().show(builder.getFragmentManager());
+        builder.getWordDetailDialog().show(builder.getFragmentManager());
     }
 
     private void setTextViewClicked(Builder builder, Pair<Integer, Integer> positions) {
@@ -93,7 +93,7 @@ public class ClickedWords {
         private FragmentManager fragmentManager;
         private TextView textView;
         private OnWordsClickedListener listener;
-        private BottomDialog bottomDialog;
+        private WordDetailDialog wordDetailDialog;
         private int focusedBgColor;
         private int focusedFgColor;
 
@@ -124,12 +124,12 @@ public class ClickedWords {
             return this;
         }
 
-        private BottomDialog getBottomDialog() {
-            return bottomDialog;
+        private WordDetailDialog getWordDetailDialog() {
+            return wordDetailDialog;
         }
 
-        public Builder setBottomDialog(BottomDialog bottomDialog) {
-            this.bottomDialog = bottomDialog;
+        public Builder setWordDetailDialog(WordDetailDialog wordDetailDialog) {
+            this.wordDetailDialog = wordDetailDialog;
             return this;
         }
 
@@ -155,8 +155,8 @@ public class ClickedWords {
             if (null == textView) {
                 throw new IllegalArgumentException("TextView can not be null");
             }
-            if (null == fragmentManager && null == bottomDialog) {
-                throw new IllegalArgumentException("BottomDialog need FragmentManager not be null");
+            if (null == fragmentManager && null == wordDetailDialog) {
+                throw new IllegalArgumentException("WordDetailDialog need FragmentManager not be null");
             }
             return new ClickedWords(this);
 

@@ -2,12 +2,9 @@ package com.github.hurshi.clickedwords;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.hurshi.clickedwordslib.ClickedWords;
-import com.github.hurshi.clickedwordslib.OnWordsClickedListener;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textView;
@@ -22,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         new ClickedWords.Builder()
                 .setTextView(textView)
-                .setBottomDialog(wordDetailDialog)
+                .setWordDetailDialog(wordDetailDialog)
                 .setFragmentManager(getSupportFragmentManager())
                 .setFocusedBgColor(R.color.focusedBgColor)
                 .setFocusedFgColor(R.color.focusedFgColor)
