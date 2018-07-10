@@ -1,6 +1,5 @@
 package com.github.hurshi.clickedwordslib;
 
-import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -15,16 +14,16 @@ import java.text.BreakIterator;
 import java.util.Locale;
 
 public class ClickedWords {
-    private static BreakIterator wordIterator;
+    private BreakIterator wordIterator;
 
-    private static BreakIterator getWordIterator() {
+    private BreakIterator getWordIterator() {
         if (null == wordIterator) {
             wordIterator = BreakIterator.getWordInstance(Locale.US);
         }
         return wordIterator;
     }
 
-    private static void setUpClickedWords(final Builder builder) {
+    ClickedWords(final Builder builder) {
         builder.getTextView().setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -45,8 +44,7 @@ public class ClickedWords {
         });
     }
 
-
-    private static Pair<Integer, Integer> getWord(String string, int offset) {
+    private Pair<Integer, Integer> getWord(String string, int offset) {
         BreakIterator breakIterator = getWordIterator();
         breakIterator.setText(string);
 
@@ -62,7 +60,7 @@ public class ClickedWords {
         return new Pair<>(start, end);
     }
 
-    private static void showWordDetail(final Builder builder, Pair<Integer, Integer> positions, String words) {
+    private void showWordDetail(final Builder builder, Pair<Integer, Integer> positions, String words) {
         setTextViewClicked(builder, positions);
         builder.getBottomDialog().setWords(words);
         builder.getBottomDialog().setListener(new BottomDialog.OnBottomDialogDismissListener() {
@@ -74,7 +72,7 @@ public class ClickedWords {
         builder.getBottomDialog().show(builder.getFragmentManager());
     }
 
-    private static void setTextViewClicked(Builder builder, Pair<Integer, Integer> positions) {
+    private void setTextViewClicked(Builder builder, Pair<Integer, Integer> positions) {
         SpannableString spannableString = new SpannableString(builder.getTextView().getText().toString());
         int fgColor = builder.getFocusedFgColor();
         if (fgColor > 0) {
@@ -87,7 +85,7 @@ public class ClickedWords {
         builder.getTextView().setText(spannableString);
     }
 
-    private static void setTextViewNormal(TextView textView) {
+    private void setTextViewNormal(TextView textView) {
         textView.setText(textView.getText().toString());
     }
 
@@ -153,14 +151,14 @@ public class ClickedWords {
             return this;
         }
 
-        public void build() {
+        public ClickedWords build() {
             if (null == textView) {
                 throw new IllegalArgumentException("TextView can not be null");
             }
             if (null == fragmentManager && null == bottomDialog) {
                 throw new IllegalArgumentException("BottomDialog need FragmentManager not be null");
             }
-            setUpClickedWords(this);
+            return new ClickedWords(this);
 
         }
     }
