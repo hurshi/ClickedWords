@@ -98,11 +98,11 @@ public class ClickedWords {
     private void setTextViewClicked(Builder builder, TextView textView, Pair<Integer, Integer> positions) {
         SpannableString spannableString = new SpannableString(textView.getText());
         int fgColor = builder.getFocusedFgColor();
-        if (fgColor != 0) {
+        if (fgColor > 0) {
             spannableString.setSpan(new ForegroundColorSpan(textView.getContext().getResources().getColor(fgColor)), positions.first, positions.second, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         }
         int bgColor = builder.getFocusedBgColor();
-        if (bgColor != 0) {
+        if (bgColor > 0) {
             spannableString.setSpan(new BackgroundColorSpan(textView.getContext().getResources().getColor(bgColor)), positions.first, positions.second, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         }
         textView.setText(spannableString);
