@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.text.BreakIterator;
+import java.util.List;
 import java.util.Locale;
 
 public class ClickedWords {
@@ -24,19 +25,31 @@ public class ClickedWords {
     }
 
     ClickedWords(final Builder builder) {
-        builder.getTextView().setOnTouchListener(new View.OnTouchListener() {
+        if (null != builder.getTextView()) {
+            toBuild(builder, builder.getTextView());
+        }
+        if (null != builder.getTextViews() && builder.getTextViews().length > 0) {
+            for (TextView tv : builder.getTextViews()) {
+                if (null != tv)
+                    toBuild(builder, tv);
+            }
+        }
+    }
+
+    private void toBuild(final Builder builder, final TextView textView) {
+        textView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    int offset = builder.getTextView().getOffsetForPosition(motionEvent.getX(), motionEvent.getY());
-                    Pair<Integer, Integer> positions = getWord(builder.getTextView().getText().toString(), offset);
-                    String words = builder.getTextView().getText().toString().substring(positions.first, positions.second);
+                    int offset = textView.getOffsetForPosition(motionEvent.getX(), motionEvent.getY());
+                    Pair<Integer, Integer> positions = getWord(textView.getText().toString(), offset);
+                    String words = textView.getText().toString().substring(positions.first, positions.second);
 
                     if (null != builder.getListener()) {
                         builder.getListener().wordsClicked(words);
                     }
                     if (null != builder.getWordDetailDialog()) {
-                        showWordDetail(builder, positions, words);
+                        showWordDetail(builder, textView, positions, words);
                     }
                 }
                 return false;
@@ -60,29 +73,29 @@ public class ClickedWords {
         return new Pair<>(start, end);
     }
 
-    private void showWordDetail(final Builder builder, Pair<Integer, Integer> positions, String words) {
-        setTextViewClicked(builder, positions);
+    private void showWordDetail(final Builder builder, final TextView textView, Pair<Integer, Integer> positions, String words) {
+        setTextViewClicked(builder, textView, positions);
         builder.getWordDetailDialog().setWords(words);
         builder.getWordDetailDialog().setListener(new WordDetailDialog.OnBottomDialogDismissListener() {
             @Override
             public void onDismiss() {
-                setTextViewNormal(builder.getTextView());
+                setTextViewNormal(textView);
             }
         });
         builder.getWordDetailDialog().show(builder.getFragmentManager());
     }
 
-    private void setTextViewClicked(Builder builder, Pair<Integer, Integer> positions) {
-        SpannableString spannableString = new SpannableString(builder.getTextView().getText().toString());
+    private void setTextViewClicked(Builder builder, TextView textView, Pair<Integer, Integer> positions) {
+        SpannableString spannableString = new SpannableString(textView.getText().toString());
         int fgColor = builder.getFocusedFgColor();
         if (fgColor > 0) {
-            spannableString.setSpan(new ForegroundColorSpan(builder.getTextView().getContext().getResources().getColor(fgColor)), positions.first, positions.second, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(textView.getContext().getResources().getColor(fgColor)), positions.first, positions.second, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         }
         int bgColor = builder.getFocusedBgColor();
         if (bgColor > 0) {
-            spannableString.setSpan(new BackgroundColorSpan(builder.getTextView().getContext().getResources().getColor(bgColor)), positions.first, positions.second, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(new BackgroundColorSpan(textView.getContext().getResources().getColor(bgColor)), positions.first, positions.second, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         }
-        builder.getTextView().setText(spannableString);
+        textView.setText(spannableString);
     }
 
     private void setTextViewNormal(TextView textView) {
@@ -96,6 +109,7 @@ public class ClickedWords {
         private WordDetailDialog wordDetailDialog;
         private int focusedBgColor;
         private int focusedFgColor;
+        private TextView[] textViews;
 
         private FragmentManager getFragmentManager() {
             return fragmentManager;
@@ -151,9 +165,18 @@ public class ClickedWords {
             return this;
         }
 
+        private TextView[] getTextViews() {
+            return textViews;
+        }
+
+        public Builder setTextViews(TextView... textViews) {
+            this.textViews = textViews;
+            return this;
+        }
+
         public ClickedWords build() {
-            if (null == textView) {
-                throw new IllegalArgumentException("TextView can not be null");
+            if (null == textView && (null == textViews || textViews.length <= 0)) {
+                throw new IllegalArgumentException("TextView or TextView array can not be null");
             }
             if (null == fragmentManager && null == wordDetailDialog) {
                 throw new IllegalArgumentException("WordDetailDialog need FragmentManager not be null");
