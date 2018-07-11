@@ -6,4 +6,7 @@
 
     <color name="focusedBgColor">#33CF85</color>
     <color name="focusedFgColor">#FFFFFF</color>
+
+    <color name="normal_txt_color">#f00</color>
+    <color name="normal_txt_bg_color">#ddd</color>
 </resources>

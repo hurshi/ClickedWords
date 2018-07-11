@@ -5,6 +5,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,21 +39,29 @@ public class ClickedWords {
 
     private void toBuild(final Builder builder, final TextView textView) {
         textView.setOnTouchListener(new View.OnTouchListener() {
+            float downX = 0;
+            float downY = 0;
+
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    int offset = textView.getOffsetForPosition(motionEvent.getX(), motionEvent.getY());
-                    Pair<Integer, Integer> positions = getWord(textView.getText().toString(), offset);
-                    String words = textView.getText().toString().substring(positions.first, positions.second);
+                    downX = motionEvent.getX();
+                    downY = motionEvent.getY();
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (Math.abs(downX - motionEvent.getX()) + Math.abs(downY - motionEvent.getY()) < 25) {
+                        int offset = textView.getOffsetForPosition(motionEvent.getX(), motionEvent.getY());
+                        Pair<Integer, Integer> positions = getWord(textView.getText().toString(), offset);
+                        String words = textView.getText().toString().substring(positions.first, positions.second);
 
-                    if (null != builder.getListener()) {
-                        builder.getListener().wordsClicked(words);
-                    }
-                    if (null != builder.getWordDetailDialog()) {
-                        showWordDetail(builder, textView, positions, words);
+                        if (null != builder.getListener()) {
+                            builder.getListener().wordsClicked(words);
+                        }
+                        if (null != builder.getWordDetailDialog()) {
+                            showWordDetail(builder, textView, positions, words);
+                        }
                     }
                 }
-                return false;
+                return true;
             }
         });
     }
@@ -74,32 +83,33 @@ public class ClickedWords {
     }
 
     private void showWordDetail(final Builder builder, final TextView textView, Pair<Integer, Integer> positions, String words) {
+        final CharSequence spannableTxt = textView.getText();
         setTextViewClicked(builder, textView, positions);
         builder.getWordDetailDialog().setWords(words);
         builder.getWordDetailDialog().setListener(new WordDetailDialog.OnBottomDialogDismissListener() {
             @Override
             public void onDismiss() {
-                setTextViewNormal(textView);
+                setTextViewNormal(textView, spannableTxt);
             }
         });
         builder.getWordDetailDialog().show(builder.getFragmentManager());
     }
 
     private void setTextViewClicked(Builder builder, TextView textView, Pair<Integer, Integer> positions) {
-        SpannableString spannableString = new SpannableString(textView.getText().toString());
+        SpannableString spannableString = new SpannableString(textView.getText());
         int fgColor = builder.getFocusedFgColor();
-        if (fgColor > 0) {
+        if (fgColor != 0) {
             spannableString.setSpan(new ForegroundColorSpan(textView.getContext().getResources().getColor(fgColor)), positions.first, positions.second, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         }
         int bgColor = builder.getFocusedBgColor();
-        if (bgColor > 0) {
+        if (bgColor != 0) {
             spannableString.setSpan(new BackgroundColorSpan(textView.getContext().getResources().getColor(bgColor)), positions.first, positions.second, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         }
         textView.setText(spannableString);
     }
 
-    private void setTextViewNormal(TextView textView) {
-        textView.setText(textView.getText().toString());
+    private void setTextViewNormal(TextView textView, CharSequence txt) {
+        textView.setText(txt);
     }
 
     public static class Builder {
