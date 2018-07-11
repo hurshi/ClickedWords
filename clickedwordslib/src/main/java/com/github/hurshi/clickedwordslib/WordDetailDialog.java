@@ -43,11 +43,7 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
         super.onStart();
 
         Window window = getDialog().getWindow();
-        WindowManager.LayoutParams params = window.getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        params.gravity = Gravity.BOTTOM;
-        window.setAttributes(params);
+        window.setAttributes(getDialogLayoutParams(window.getAttributes()));
 
         getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -103,10 +99,16 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
 
     public abstract void setUpView(View v, String word);
 
-    public void onDialogDismiss() {
+    protected void onDialogDismiss() {
 
     }
 
+    protected WindowManager.LayoutParams getDialogLayoutParams(WindowManager.LayoutParams params) {
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.gravity = Gravity.BOTTOM;
+        return params;
+    }
 
     public interface OnBottomDialogDismissListener {
         void onDismiss();
