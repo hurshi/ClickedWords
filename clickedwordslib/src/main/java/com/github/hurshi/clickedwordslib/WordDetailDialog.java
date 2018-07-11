@@ -56,6 +56,7 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
                 ft.hide(WordDetailDialog.this);
                 ft.commit();
 //                dismiss();
+                onDialogDismiss();
                 if (null != listener) {
                     listener.onDismiss();
                 }
@@ -101,6 +102,10 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
     public abstract String getFragmentTag();
 
     public abstract void setUpView(View v, String word);
+
+    public void onDialogDismiss() {
+
+    }
 
 
     public interface OnBottomDialogDismissListener {
