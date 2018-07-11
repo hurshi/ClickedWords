@@ -169,7 +169,7 @@ public class ClickedWords {
             return textViews;
         }
 
-        public Builder setTextViews(TextView... textViews) {
+        public Builder setTextViews(TextView[] textViews) {
             this.textViews = textViews;
             return this;
         }
