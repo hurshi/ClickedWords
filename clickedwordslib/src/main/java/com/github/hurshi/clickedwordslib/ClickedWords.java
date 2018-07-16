@@ -49,7 +49,7 @@ public class ClickedWords {
                     if (Math.abs(downX - motionEvent.getX()) + Math.abs(downY - motionEvent.getY()) < 25) {
                         int offset = textView.getOffsetForPosition(motionEvent.getX(), motionEvent.getY());
                         Pair<Integer, Integer> positions = getWord(textView.getText().toString(), offset);
-                        if (positions.first >= 0 && positions.first < textView.getText().length() && positions.second >= 0 && positions.second < textView.getText().length()) {
+                        if (positions.first >= 0 && positions.first <= textView.getText().length() && positions.second >= 0 && positions.second <= textView.getText().length()) {
                             String words = textView.getText().toString().substring(positions.first, positions.second);
                             if (null != builder.getListener()) {
                                 builder.getListener().wordsClicked(words);
