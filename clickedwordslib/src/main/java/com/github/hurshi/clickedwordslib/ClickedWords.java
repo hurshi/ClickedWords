@@ -84,14 +84,16 @@ public class ClickedWords {
     private void showWordDetail(final Builder builder, final TextView textView, Pair<Integer, Integer> positions, String words) {
         final CharSequence spannableTxt = textView.getText();
         setTextViewClicked(builder, textView, positions);
-        builder.getWordDetailDialog().setWords(words);
-        builder.getWordDetailDialog().setListener(new WordDetailDialog.OnBottomDialogDismissListener() {
-            @Override
-            public void onDismiss() {
-                setTextViewNormal(textView, spannableTxt);
-            }
-        });
-        builder.getWordDetailDialog().show(builder.getFragmentManager());
+        boolean toShow = builder.getWordDetailDialog().setWords(words);
+        if (toShow) {
+            builder.getWordDetailDialog().setListener(new WordDetailDialog.OnBottomDialogDismissListener() {
+                @Override
+                public void onDismiss() {
+                    setTextViewNormal(textView, spannableTxt);
+                }
+            });
+            builder.getWordDetailDialog().show(builder.getFragmentManager());
+        }
     }
 
     private void setTextViewClicked(Builder builder, TextView textView, Pair<Integer, Integer> positions) {

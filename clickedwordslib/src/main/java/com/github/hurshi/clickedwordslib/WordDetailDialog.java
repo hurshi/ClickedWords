@@ -65,11 +65,12 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
         this.listener = listener;
     }
 
-    public void setWords(String words) {
+    public boolean setWords(String words) {
         this.words = words;
         if (null != getView()) {
             setUpView(getView(), words);
         }
+        return true;
     }
 
     public void show(FragmentManager manager) {
