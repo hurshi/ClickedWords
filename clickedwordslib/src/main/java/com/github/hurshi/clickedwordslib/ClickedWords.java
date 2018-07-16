@@ -5,14 +5,12 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import java.text.BreakIterator;
-import java.util.List;
 import java.util.Locale;
 
 public class ClickedWords {
