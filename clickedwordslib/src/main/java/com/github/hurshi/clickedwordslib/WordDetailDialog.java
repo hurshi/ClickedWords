@@ -38,10 +38,10 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
         return inflater.inflate(getLayoutRes(), container, false);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         Window window = getDialog().getWindow();
         window.setAttributes(getDialogLayoutParams(window.getAttributes()));
 
@@ -60,6 +60,7 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
         });
         setUpView(getView(), words);
     }
+
 
     public void setListener(OnBottomDialogDismissListener listener) {
         this.listener = listener;
