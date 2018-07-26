@@ -16,6 +16,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 public abstract class WordDetailDialog extends AppCompatDialogFragment {
     private OnBottomDialogDismissListener listener;
     private String words;
@@ -66,10 +72,27 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
         this.listener = listener;
     }
 
-    public boolean setWords(String words) {
-        this.words = words;
+    private Disposable disposable;
+
+    public boolean setWords(String w) {
+        this.words = w;
         if (null != getView()) {
-            setUpView(getView(), words);
+            if (null != disposable && !disposable.isDisposed()) {
+                disposable.dispose();
+                if (null != listener) {
+                    listener.onDismiss();
+                }
+            }
+            disposable = Observable.just(words)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(String string) throws Exception {
+                            setUpView(getView(), words);
+                            disposable = null;
+                        }
+                    });
         }
         return true;
     }
