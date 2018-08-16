@@ -115,7 +115,7 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
             ft.show(this);
             getDialog().show();
         }
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     public abstract int getLayoutRes();
