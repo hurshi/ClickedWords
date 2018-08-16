@@ -56,7 +56,7 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
             public void onDismiss(DialogInterface dialogInterface) {
                 FragmentTransaction ft = manager.beginTransaction();
                 ft.hide(WordDetailDialog.this);
-                ft.commit();
+                ft.commitAllowingStateLoss();
 //                dismiss();
                 onDialogDismiss();
                 if (null != listener) {
