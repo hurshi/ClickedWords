@@ -54,9 +54,9 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
         getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                FragmentTransaction ft = manager.beginTransaction();
-                ft.hide(WordDetailDialog.this);
-                ft.commitAllowingStateLoss();
+//                FragmentTransaction ft = manager.beginTransaction();
+//                ft.hide(WordDetailDialog.this);
+//                ft.commitAllowingStateLoss();
 //                dismiss();
                 onDialogDismiss();
                 if (null != listener) {
@@ -125,6 +125,11 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
     public abstract void setUpView(View v, String word);
 
     protected void onDialogDismiss() {
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
 
     }
 
