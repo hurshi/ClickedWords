@@ -58,9 +58,11 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
 //                ft.hide(WordDetailDialog.this);
 //                ft.commitAllowingStateLoss();
 //                dismiss();
-                onDialogDismiss();
-                if (null != listener) {
-                    listener.onDismiss();
+                if (null != getActivity() && !getActivity().isFinishing()) {
+                    onDialogDismiss();
+                    if (null != listener) {
+                        listener.onDismiss();
+                    }
                 }
             }
         });
