@@ -83,6 +83,9 @@ public class ClickedWords {
 
     private void showWordDetail(final Builder builder, final TextView textView, Pair<Integer, Integer> positions, String words) {
         builder.getWordDetailDialog().clear();
+        if (null == words) {
+            return;
+        }
         if (builder.getWordDetailDialog().setWords(words)) {
             final CharSequence spannableTxt = textView.getText();
             setTextViewClicked(builder, textView, positions);
