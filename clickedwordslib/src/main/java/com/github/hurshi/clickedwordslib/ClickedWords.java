@@ -90,6 +90,7 @@ public class ClickedWords {
                 @Override
                 public void onDismiss() {
                     setTextViewNormal(textView, spannableTxt);
+                    builder.getWordDetailDialog().hide(builder.getFragmentManager());
                 }
             });
             builder.getWordDetailDialog().show(builder.getFragmentManager());

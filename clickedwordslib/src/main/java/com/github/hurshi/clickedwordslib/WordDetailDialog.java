@@ -109,6 +109,15 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
         ft.commitAllowingStateLoss();
     }
 
+    public void hide(FragmentManager manager) {
+        if (null == manager) {
+            return;
+        }
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.hide(this);
+        ft.commitAllowingStateLoss();
+    }
+
     public abstract int getLayoutRes();
 
     public abstract String getFragmentTag();
