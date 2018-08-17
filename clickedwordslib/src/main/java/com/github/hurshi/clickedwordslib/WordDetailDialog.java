@@ -119,7 +119,7 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
 
     }
 
-    private void clear() {
+    public void clear() {
         if (null != getActivity() && !getActivity().isFinishing()) {
             onDialogDismiss();
             if (null != listener) {
