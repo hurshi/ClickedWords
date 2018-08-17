@@ -82,9 +82,10 @@ public class ClickedWords {
     }
 
     private void showWordDetail(final Builder builder, final TextView textView, Pair<Integer, Integer> positions, String words) {
+        builder.getWordDetailDialog().setListener(null);
+        final CharSequence spannableTxt = textView.getText();
         boolean toShow = builder.getWordDetailDialog().setWords(words);
         if (toShow) {
-            final CharSequence spannableTxt = textView.getText();
             setTextViewClicked(builder, textView, positions);
             builder.getWordDetailDialog().setListener(new WordDetailDialog.OnBottomDialogDismissListener() {
                 @Override

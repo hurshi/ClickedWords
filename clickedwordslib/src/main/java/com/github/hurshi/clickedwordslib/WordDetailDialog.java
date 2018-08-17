@@ -25,7 +25,6 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class WordDetailDialog extends AppCompatDialogFragment {
     private OnBottomDialogDismissListener listener;
     private String words;
-    private FragmentManager manager;
 
     public WordDetailDialog() {
     }
@@ -54,16 +53,7 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
         getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-//                FragmentTransaction ft = manager.beginTransaction();
-//                ft.hide(WordDetailDialog.this);
-//                ft.commitAllowingStateLoss();
-//                dismiss();
-                if (null != getActivity() && !getActivity().isFinishing()) {
-                    onDialogDismiss();
-                    if (null != listener) {
-                        listener.onDismiss();
-                    }
-                }
+                clear();
             }
         });
         setUpView(getView(), words);
@@ -100,7 +90,6 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
     }
 
     public void show(FragmentManager manager) {
-        this.manager = manager;
         show(manager, getFragmentTag());
     }
 
@@ -128,6 +117,21 @@ public abstract class WordDetailDialog extends AppCompatDialogFragment {
 
     protected void onDialogDismiss() {
 
+    }
+
+    private void clear() {
+        if (null != getActivity() && !getActivity().isFinishing()) {
+            onDialogDismiss();
+            if (null != listener) {
+                listener.onDismiss();
+            }
+        }
+        if (null != disposable && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+
+        listener = null;
+        words = "";
     }
 
     @Override
