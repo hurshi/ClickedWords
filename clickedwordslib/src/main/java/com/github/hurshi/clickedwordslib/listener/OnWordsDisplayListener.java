@@ -1,4 +1,4 @@
-package com.github.hurshi.clickedwordslib.ui;
+package com.github.hurshi.clickedwordslib.listener;
 
 import android.widget.PopupWindow;
 import android.widget.TextView;

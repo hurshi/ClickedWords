@@ -1,4 +1,4 @@
-package com.github.hurshi.clickedwordslib.core;
+package com.github.hurshi.clickedwordslib.listener;
 
 import android.graphics.Rect;
 import android.support.v4.util.Pair;

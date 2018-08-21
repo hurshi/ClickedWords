@@ -10,8 +10,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.github.hurshi.clickedwordslib.core.ClickedWords;
-import com.github.hurshi.clickedwordslib.core.OnWordsClickedListener;
-import com.github.hurshi.clickedwordslib.ui.OnWordsDisplayListener;
+import com.github.hurshi.clickedwordslib.listener.OnWordsClickedListener;
+import com.github.hurshi.clickedwordslib.listener.OnWordsDisplayListener;
 import com.github.hurshi.clickedwordslib.util.ClickWordsUtils;
 
 public class ClickedWordsDisplayer {

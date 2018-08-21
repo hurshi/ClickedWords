@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.github.hurshi.clickedwordslib.core.ClickedWords;
 import com.github.hurshi.clickedwordslib.helper.ClickedWordsDisplayer;
-import com.github.hurshi.clickedwordslib.ui.OnWordsDisplayListener;
+import com.github.hurshi.clickedwordslib.listener.OnWordsDisplayListener;
 
 public class MainActivity extends AppCompatActivity implements OnWordsDisplayListener {
     private TextView textView1;
