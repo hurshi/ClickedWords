@@ -22,9 +22,6 @@ public class MainActivity extends AppCompatActivity implements OnWordsDisplayLis
     private TextView textView2;
     private TextView textView3;
 
-    private PopupWindow popupWindow;
-    private TextView tv;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +32,6 @@ public class MainActivity extends AppCompatActivity implements OnWordsDisplayLis
         textView3 = (TextView) findViewById(R.id.textview3);
 
         setTextViewSpanStr();
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.view_words, null);
-        tv = (TextView) popupView.findViewById(R.id.textview);
-
-        popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-
-        if (Build.VERSION.SDK_INT >= 21)
-            popupWindow.setElevation(20);
 
         setClickedWords(textView1);
         setClickedWords(textView2);
@@ -58,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements OnWordsDisplayLis
     }
 
     @Override
-    public void wordDisplay(String words) {
-        tv.setText(words);
+    public void wordFetched(PopupWindow popupWindow, String words) {
+        popupWindow.getContentView().<TextView>findViewById(R.id.textview).setText(words);
     }
 
     @Override
@@ -67,11 +55,25 @@ public class MainActivity extends AppCompatActivity implements OnWordsDisplayLis
         popupWindow.showAtLocation(textView, Gravity.CENTER_HORIZONTAL | Gravity.TOP, offsetX, offsetY);
     }
 
+    PopupWindow popupWindow = null;
+
+    @Override
+    public PopupWindow getInitedPopupWindow() {
+        if (null == popupWindow) {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.view_words, null);
+            popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+            if (Build.VERSION.SDK_INT >= 21)
+                popupWindow.setElevation(20);
+        }
+        return popupWindow;
+    }
+
+
     private void setClickedWords(TextView textView) {
         ClickedWordsDisplayer.showAsPopupWindow(
                 new ClickedWords.Builder()
                         .setTextView(textView),
-                popupWindow,
                 this,
                 R.color.focusedFgColor,
                 R.color.focusedBgColor

@@ -4,7 +4,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 public interface OnWordsDisplayListener {
-    void wordDisplay(String words);
+
+    PopupWindow getInitedPopupWindow();
+
+    void wordFetched(PopupWindow popupWindow, String words);
 
     void showPopupWindow(PopupWindow popupWindow, TextView textView, int offsetX, int offsetY);
 }

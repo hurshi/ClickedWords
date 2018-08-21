@@ -15,19 +15,18 @@ import com.github.hurshi.clickedwordslib.ui.OnWordsDisplayListener;
 import com.github.hurshi.clickedwordslib.util.ClickWordsUtils;
 
 public class ClickedWordsDisplayer {
-    public static void showAsPopupWindow(ClickedWords.Builder builder, final PopupWindow popupWindow, final OnWordsDisplayListener listener, final int focusedFgColor, final int focusedBgColor) {
-        if (null == popupWindow) {
-            return;
-        }
+    public static void showAsPopupWindow(ClickedWords.Builder builder, final OnWordsDisplayListener listener, final int focusedFgColor, final int focusedBgColor) {
         builder.addListener(new OnWordsClickedListener() {
             @Override
             public void wordsClicked(TextView textView, String words, Pair<Integer, Integer> index, Rect focusedRect, int[] locationInScreen) {
                 int x = (int) (locationInScreen[0] + focusedRect.left + (focusedRect.right - focusedRect.left - ClickWordsUtils.getScreenW(textView.getContext())) / 2.0f);
                 int y = locationInScreen[1] + focusedRect.bottom;
-                setClickedStyle(textView, popupWindow, index, focusedFgColor, focusedBgColor);
+
                 if (null != listener) {
-                    listener.wordDisplay(words);
+                    PopupWindow popupWindow = listener.getInitedPopupWindow();
+                    listener.wordFetched(popupWindow, words);
                     listener.showPopupWindow(popupWindow, textView, x, y);
+                    setClickedStyle(textView, popupWindow, index, focusedFgColor, focusedBgColor);
                 }
             }
         });
@@ -35,6 +34,9 @@ public class ClickedWordsDisplayer {
     }
 
     private static void setClickedStyle(final TextView textView, final PopupWindow popupWindow, Pair<Integer, Integer> indexs, int focusedFgColor, int focusedBgColor) {
+        if (null == popupWindow) {
+            return;
+        }
         final CharSequence spannableTxt = textView.getText();
         setTextViewClicked(textView, indexs, focusedFgColor, focusedBgColor);
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
