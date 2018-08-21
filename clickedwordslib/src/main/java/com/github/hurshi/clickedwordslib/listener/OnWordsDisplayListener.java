@@ -10,4 +10,6 @@ public interface OnWordsDisplayListener {
     void wordFetched(PopupWindow popupWindow, String words);
 
     void showPopupWindow(PopupWindow popupWindow, TextView textView, int offsetX, int offsetY);
+
+    void hidePopupWindow(PopupWindow popupWindow);
 }

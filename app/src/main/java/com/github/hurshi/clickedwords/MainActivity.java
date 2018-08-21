@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements OnWordsDisplayLis
         return popupWindow;
     }
 
+    @Override
+    public void hidePopupWindow(PopupWindow popupWindow) {
+
+    }
 
     private void setClickedWords(TextView textView) {
         ClickedWordsDisplayer.showAsPopupWindow(

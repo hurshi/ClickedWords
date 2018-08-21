@@ -26,14 +26,14 @@ public class ClickedWordsDisplayer {
                     PopupWindow popupWindow = listener.getInitedPopupWindow();
                     listener.wordFetched(popupWindow, words);
                     listener.showPopupWindow(popupWindow, textView, x, y);
-                    setClickedStyle(textView, popupWindow, index, focusedFgColor, focusedBgColor);
+                    setClickedStyle(listener, textView, popupWindow, index, focusedFgColor, focusedBgColor);
                 }
             }
         });
         builder.build();
     }
 
-    private static void setClickedStyle(final TextView textView, final PopupWindow popupWindow, Pair<Integer, Integer> indexs, int focusedFgColor, int focusedBgColor) {
+    private static void setClickedStyle(final OnWordsDisplayListener listener, final TextView textView, final PopupWindow popupWindow, Pair<Integer, Integer> indexs, int focusedFgColor, int focusedBgColor) {
         if (null == popupWindow) {
             return;
         }
@@ -44,6 +44,9 @@ public class ClickedWordsDisplayer {
             public void onDismiss() {
                 popupWindow.setOnDismissListener(null);
                 setTextViewNormal(textView, spannableTxt);
+                if (null != listener) {
+                    listener.hidePopupWindow(popupWindow);
+                }
             }
         });
     }
