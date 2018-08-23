@@ -24,9 +24,9 @@ public class ClickedWordsDisplayer {
 
                 if (null != listener) {
                     PopupWindow popupWindow = listener.getInitedPopupWindow();
-                    listener.wordFetched(popupWindow, words);
                     listener.showPopupWindow(popupWindow, textView, x, y);
                     setClickedStyle(listener, textView, popupWindow, index, focusedFgColor, focusedBgColor);
+                    listener.wordFetched(popupWindow, words);
                 }
             }
         });
