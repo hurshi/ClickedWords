@@ -1,5 +1,7 @@
 package com.github.hurshi.clickedwords;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -63,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements OnWordsDisplayLis
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.view_words, null);
             popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setTouchable(true);
             if (Build.VERSION.SDK_INT >= 21)
                 popupWindow.setElevation(20);
         }
