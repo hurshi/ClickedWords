@@ -74,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements OnWordsDisplayLis
 
     }
 
+    @Override
+    public String getCleanedWord(String word) {
+        return word;
+    }
+
     private void setClickedWords(TextView textView) {
         ClickedWordsDisplayer.showAsPopupWindow(
                 new ClickedWords.Builder()

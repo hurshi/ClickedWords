@@ -19,14 +19,20 @@ public class ClickedWordsDisplayer {
         builder.addListener(new OnWordsClickedListener() {
             @Override
             public void wordsClicked(TextView textView, String words, Pair<Integer, Integer> index, Rect focusedRect, int[] locationInScreen) {
-                int x = (int) (locationInScreen[0] + focusedRect.left + (focusedRect.right - focusedRect.left - ClickWordsUtils.getScreenW(textView.getContext())) / 2.0f);
-                int y = locationInScreen[1] + focusedRect.bottom;
-
                 if (null != listener) {
-                    PopupWindow popupWindow = listener.getInitedPopupWindow();
-                    listener.showPopupWindow(popupWindow, textView, x, y);
-                    setClickedStyle(listener, textView, popupWindow, index, focusedFgColor, focusedBgColor);
-                    listener.wordFetched(popupWindow, words);
+                    synchronized (listener) {
+                        String clearedWord = listener.getCleanedWord(words);
+                        if (null == clearedWord || clearedWord.length() <= 0) {
+                            return;
+                        }
+
+                        int x = (int) (locationInScreen[0] + focusedRect.left + (focusedRect.right - focusedRect.left - ClickWordsUtils.getScreenW(textView.getContext())) / 2.0f);
+                        int y = locationInScreen[1] + focusedRect.bottom;
+                        PopupWindow popupWindow = listener.getInitedPopupWindow();
+                        listener.wordFetched(popupWindow, clearedWord);
+                        setClickedStyle(listener, textView, popupWindow, index, focusedFgColor, focusedBgColor);
+                        listener.showPopupWindow(popupWindow, textView, x, y);
+                    }
                 }
             }
         });
@@ -34,7 +40,7 @@ public class ClickedWordsDisplayer {
     }
 
     private static void setClickedStyle(final OnWordsDisplayListener listener, final TextView textView, final PopupWindow popupWindow, Pair<Integer, Integer> indexs, int focusedFgColor, int focusedBgColor) {
-        if (null == popupWindow) {
+        if (null == popupWindow || popupWindow.isShowing()) {
             return;
         }
         final CharSequence spannableTxt = textView.getText();
